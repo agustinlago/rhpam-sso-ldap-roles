@@ -1,9 +1,6 @@
-# rhpam 7.x -> sso 7.x -> ldap -> roles
+# RHPAM 7.x -> SSO 7.x -> LDAP -> Roles
 
 El objetivo de este documento es decribir los pasos basicos para montar:
-
-[![DEMO RHPAM](Screenshot_20210415_232050.png)](https://drive.google.com/file/d/1HHWj_n7h3Rmw5236zRoJh6cSfs9nPhQx/view?usp=sharing)
-
 
 - Servidor LDAP / AD: Con 1 usuario administrador rol 'admin' con acceso total al 'business-central' y 2 usuarios con rol 'user' asociados al grupo 'grupo1'
 - Servidor SSO integrado con con LDAP, configurado para asociar los grupos del LDAP a roles del SSO.
@@ -14,11 +11,15 @@ La inteción es demostrar como crear un proceso desde cero a travez del business
 Seguidamente se va explicar los pasos necesarios para:
 
 - Instalar y configurar servidor [LDAP](#ldap)
-- Instalar y configurar [RHSSO](#rhsso)
-- Instalar y configurar [RHPAM](#rhpam)
+- Instalar y configurar [RHSSO](#rhsso-7x)
+- Instalar y configurar [RHPAM](#rhpam-7x)
 - Probar todo con un proceso de [prueba](#test).
 
 ---
+
+## Demo
+
+![](demo.gif)
 
 ## LDAP
 
@@ -98,7 +99,7 @@ Descargamos 'rh-sso-7x.zip' y ejecutamos:
 
 Accedemos 'http://localhost:8180/auth', en este primer acceso nos va a solicitar usuario y clave para el administrador. Ingresamos user: admin, password: redhat01.
 
-Una vez dentro de la consola, creamos el realm "RHPAM". Seguidamente creamos los siguientes clientes:
+Una vez dentro de la consola, creamos el realm "rhpam". Seguidamente creamos los siguientes clientes:
 
 - kie: Client Protocol: openid-connect / Access Type: confidential
 
@@ -128,6 +129,7 @@ Seguidamente modificamos el mapper
  - 'username' modificando el atributo 'LDAP Attribute' con 'uid'
  - 'last name' modificando el atributo 'LDAP Attribute' con 'sn'
 
+#### Configuracion Alternativa
 Tambien es posible mappear grupos de ldap a roles en el SSO (en forma manual), para esto en vez de crear un role-ldap-mapper debemos crear un 'group-ldap-mapper' como se ve en la imagen:
 
 ![](rhsso-ldap-mapper-group.png)
@@ -136,7 +138,7 @@ Seguidamente crear los roles en SSO:
 
 ![](rhsso-pam-roles.png)
 
-Y asociar el grupo importados anteriormente al rol de PAM que requera:
+Y asociar el grupo importado anteriormente al rol de PAM que requiera:
 
 ![](rhsso-group1.png)
 ![](rhsso-group2.png)
@@ -154,14 +156,17 @@ Y asociar el grupo importados anteriormente al rol de PAM que requera:
 
 1. Descromprimimos el jboss-eap
 1. Descromprimimos / reemplazamos el contenidos del directorio del 'business-central' dentro del 'jboss-eap'
-1. Descromprimimos / reemplazamos el contenidos del directorio del 'kie-server' dentro del 'jboss-eap'
+1. Descromprimimos / reemplazamos el contenidos del directorio del 'kie-server' dentro del 'jboss-eap/standalone/deployments'
 1. Descromprimimos / reemplazamos el contenidos del directorio del 'rhsso-adapter' dentro del 'jboss-eap'
 
 ### Configuración 
 
 Reemplazamos el archivo 'jboss-eap/standalone/configuration/standalone-full.xml' por el existente en este repositorio (standalone-full.xml.sso). 
 
-Modificar el secret para el cliente kie y kie-execution-server. Para esto buscar el tag '\<credential name="secret"\>' y modificar el que corresponda.
+Modificar el secret para el cliente kie y kie-execution-server del SSO. Para esto buscar el tag '\<credential name="secret"\>' y modificar el que corresponda.
+
+
+#### Configuración Alternativa
 
 Tambien es posible integrar contra el ldap directamente registrando un nuevo 'security-domain' (para esto reemplazar con el archivo standalone-full.xml.ldap)
 
@@ -182,7 +187,7 @@ Es posible tambien cargar los usuarios y roles desde el EAP para esto ejecutar:
 ```
 (Si se usa esta opcion, omitir las configuracion para sso o ldap. Usar la configuracion por default)
 
-Resumo los roles disponibles
+Resumen de los roles disponibles
 ```
 admin         # Si BC / No KIE   -> Todo
 analyst       # Si BC / No KIE   -> Solo falta Deploy
@@ -204,9 +209,11 @@ Se creo un appender para la seguridad y de esa forma auditar los roles de los us
 tail -f audit.log | grep -e "Authenticated as"
 ```
 
-Ingresemos a 'http://localhost:8180/auth/' con el usuario 'pamadmin'. Si los usuarios en ldap estan bien cargados y la integracion entre ldap -> rhsso -> rhpam es correcta, vamos a lograr entrar a la pantalla principal del bc.
+Ingresemos a 'http://localhost:8180/business-central' con el usuario 'pamadmin'. Si los usuarios en ldap estan bien cargados y la integracion entre ldap -> rhsso -> rhpam es correcta, vamos a lograr entrar a la pantalla principal del bc.
 
 ![](rhpam-bc-home.png)
+
+### Caso de prueba
 
 Ahora estamos listos para empezar a diseñar nuestro primer proceso, para esto ingresamos en 'HOME_BC -> Design -> Projects', seguidamente:
 
@@ -309,7 +316,6 @@ Consultar la imagen del proceso
 ```sh
 curl -X GET "http://localhost:8080/kie-server/services/rest/server/containers/${pam_kiecontainerId}/images/processes/instances/${pam_taskId}" -u ${pam_basic}
 ```
-
 
 ## Errores conocidos
 

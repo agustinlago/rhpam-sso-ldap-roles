@@ -3,11 +3,11 @@
 
 <video src="https://gitlab.com/gitlab-org/gitlab-foss/uploads/7a4b740da47ad1495cf8bed4154bb639/sample-video.mov" controls="true" data-setup="{}" data-title="sample-video" width="400" preload="metadata" class="gfm"></video>
 
-![](pam-demo.webm)
+![](https://drive.google.com/file/d/1C9i67bDKfHF998yTNptr1BOyaXJ_-zC2/view?usp=sharing)
 
 El objetivo de este documento es decribir los pasos basicos para montar:
 
-[![IMAGE ALT TEXT HERE](Screenshot_20210415_232050.png)](https://drive.google.com/file/d/1EjhbfkFNtpEG_pMZpq36NsFkFZLlB3qE/view?usp=sharing)
+[![IMAGE ALT TEXT HERE](https://drive.google.com/file/d/1C9i67bDKfHF998yTNptr1BOyaXJ_-zC2/view?usp=sharing)](https://drive.google.com/file/d/1EjhbfkFNtpEG_pMZpq36NsFkFZLlB3qE/view?usp=sharing)
 
 
 - Servidor LDAP / AD: Con 1 usuario administrador rol 'admin' con acceso total al 'business-central' y 2 usuarios con rol 'user' asociados al grupo 'grupo1'

@@ -1,13 +1,8 @@
 # rhpam 7.x -> sso 7.x -> ldap -> roles
 
-
-<video src="https://gitlab.com/gitlab-org/gitlab-foss/uploads/7a4b740da47ad1495cf8bed4154bb639/sample-video.mov" controls="true" data-setup="{}" data-title="sample-video" width="400" preload="metadata" class="gfm"></video>
-
-![](https://drive.google.com/file/d/1C9i67bDKfHF998yTNptr1BOyaXJ_-zC2/view?usp=sharing)
-
 El objetivo de este documento es decribir los pasos basicos para montar:
 
-[![IMAGE ALT TEXT HERE](https://drive.google.com/file/d/1C9i67bDKfHF998yTNptr1BOyaXJ_-zC2/view?usp=sharing)](https://drive.google.com/file/d/1EjhbfkFNtpEG_pMZpq36NsFkFZLlB3qE/view?usp=sharing)
+[![DEMO RHPAM](Screenshot_20210415_232050.png)](https://drive.google.com/file/d/1HHWj_n7h3Rmw5236zRoJh6cSfs9nPhQx/view?usp=sharing)
 
 
 - Servidor LDAP / AD: Con 1 usuario administrador rol 'admin' con acceso total al 'business-central' y 2 usuarios con rol 'user' asociados al grupo 'grupo1'
@@ -15,16 +10,6 @@ El objetivo de este documento es decribir los pasos basicos para montar:
 - RHPAM (BC y KieServer) integrado con el SSO para seguridad.
 
 La inteción es demostrar como crear un proceso desde cero a travez del business-central, configurar actores y grupos, desplegar el proceso en el KieServer e interactuar con la API para transiciónar las tareas. A su vez demostrar, la correcta configuración de la integración con el SSO / LDAP y los usuarios.
-
-
-<object width="425" height="350">
-  <param name="movie" value="http://www.youtube.com/user/wwwLoveWatercom?v=BTRN1YETpyg" />
-  <param name="wmode" value="transparent" />
-  <embed src="http://www.youtube.com/user/wwwLoveWatercom?v=BTRN1YETpyg"
-         type="application/x-shockwave-flash"
-         wmode="transparent" width="425" height="350" />
-</object>
-
 
 Seguidamente se va explicar los pasos necesarios para:
 
